@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { UserDocument } from "./user.model";
 
 export interface SessionDocument extends mongoose.Document {
-    user: UserDocument["_id"];
+    userId: UserDocument["_id"];
     userAgent: String;
     createdAt: Date;
     updateAt: Date;
@@ -10,7 +10,7 @@ export interface SessionDocument extends mongoose.Document {
 
 const SessionSchema = new mongoose.Schema(
     {
-        user: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             unique:true,
             ref: "User"

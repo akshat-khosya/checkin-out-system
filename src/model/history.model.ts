@@ -12,7 +12,7 @@ export interface UserDocument extends mongoose.Document {
 
 }
 
-const HistorySchema = new mongoose.Schema({
+const HistorySchema = new mongoose.Schema<UserDocument>({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

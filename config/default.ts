@@ -10,6 +10,7 @@ export default{
     privateKey:process.env.PRIVATE_KEY,
     googleId:process.env.ID,
     googleSecret:process.env.SECRET,
-    refreshToken:process.env.REFRESH_TOKEN
+    refreshToken:process.env.REFRESH_TOKEN,
+    email:"20106@iiitu.ac.in"
     
 }

@@ -7,7 +7,7 @@ export interface UserDocument extends mongoose.Document {
     name: string;
     password: string;
     role: string;
-    phone: string;
+    phone: number;
     createdAt: Date;
     updatedAt: Date;
     comparePassword: (candidatePassword: string) => Promise<boolean>;
@@ -35,8 +35,9 @@ const UserSchema = new mongoose.Schema({
         default: "user"
     },
     phone: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
+        unique: true
     }
 
 },
