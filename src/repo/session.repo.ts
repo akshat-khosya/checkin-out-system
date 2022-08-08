@@ -4,7 +4,7 @@ import Session from "../model/session.model";
 
 export async function findAndDeleteSessionQuery(query:Object) {
    
-    const sessionCheck=await await Session.findOneAndDelete(query)
+    const sessionCheck=await Session.findOneAndDelete(query)
     
     return sessionCheck;
 }
