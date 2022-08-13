@@ -6,10 +6,10 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon --config nodemon.json src/server.ts",
-    "build": "tsc",
+    "build": "",
     "test": "jest ",
     "test:watch": "jest --watch",
-    "heroku":"node dist/src/server.js"
+    "heroku": "node dist/src/server.js"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,7 @@
     "otp-generator": "^4.0.0",
     "pino": "^8.3.0",
     "pino-pretty": "^8.1.0",
-    "yup": "^0.32.11",
-    "ts-node": "^10.9.1"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
