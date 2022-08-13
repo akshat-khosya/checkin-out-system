@@ -22,4 +22,5 @@ app.listen(port, host, () => {
   log.info(`Server is listening at http://${host}:${port}`);
   connect();
   routes(app);
+
 });

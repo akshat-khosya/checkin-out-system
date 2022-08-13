@@ -1,6 +1,7 @@
 import otpGenrator from 'otp-generator';
 import _ from "lodash";
 import { createUserQuery, findUserQuery, validatePasswordQuery } from '../repo/user.repo';
+import { UserDocument } from '../model/user.model';
 export async function createUser(input: { name: string, roll: number, phone: number }) {
     const otp = otpGenrator.generate(10, { specialChars: true, lowerCaseAlphabets: true, upperCaseAlphabets: true, digits: true });
     const userdata = {
@@ -29,4 +30,13 @@ export async function validatePassword({
     }
     return _.omit(user, "password");
 
+}
+
+export async function fetchUserProfile(userId:UserDocument["_id"]){
+    const user=await findUserQuery({_id:userId});
+    if(user){
+        return user;
+    }
+    return false;
+    
 }

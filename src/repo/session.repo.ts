@@ -3,12 +3,11 @@ import Session from "../model/session.model";
 
 
 export async function findAndDeleteSessionQuery(query:Object) {
-   
-    const sessionCheck=await Session.findOneAndDelete(query)
-    
-    return sessionCheck;
+    return Session.findOneAndDelete(query)
 }
-
+export async function deleteSessionQuery(query:Object) {
+    return Session.deleteOne(query);
+}
 export async function sessionCreateQuery(input: { userId: string,userAgent:string }) {
     
     return await Session.create({ userId: input.userId, userAgent:input.userAgent });

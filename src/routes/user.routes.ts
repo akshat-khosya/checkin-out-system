@@ -1,10 +1,16 @@
-import {Express} from "express";
-import { createUserHandler } from "../controller/user.controller";
-import { validateRequest } from "../middleware";
+import {Express, Router} from "express";
+import { createUserHandler, getUserProfileHandler } from "../controller/user.controller";
+import { requiresUser, validateRequest } from "../middleware";
 import { createUserSchema } from "../schema/user.schema";
 
-export default function(app:Express){
+export default function(){
+    const router =  Router();
     // create user
-    app.post("/api/user/create",validateRequest(createUserSchema),createUserHandler);
+    router.post("/api/user/create",validateRequest(createUserSchema),createUserHandler);
+
+    // user profile
+    router.get("/api/user/profile",requiresUser,getUserProfileHandler);
+
+    return router;
     
 }

@@ -28,7 +28,18 @@ export async function createSessionHandler(req: Request, res: Response) {
 
 // delete session - logout
 export async function deleteSessionHandler(req: Request, res: Response) {
+    try {
+        const session = await deleteSession(req.user._id);
+        return res.send("Session deleted");
+    } catch (error) {
+        log.error(error);
+        return res.status(500).json({
+            message: "Something went wrong"
+        });
+    }
 
-    const session = await deleteSession(req.user._id);
-    return res.send("Session deleted");
 }
+
+
+
+

@@ -7,38 +7,33 @@ import log from "../logger";
 const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = req.headers["x-access-token"] as string;
     const refreshToken = req.headers["x-refresh-token"] as string;
-    if (!refreshToken || !accessToken) {
+    if(!accessToken){
         return next();
     }
-    const { decoded, expired } = decode(accessToken);
-
-    if (decoded) {
-        const result=await sessionValidation(decoded.sessionId,refreshToken);
-        
-        if (!result) {
-            
-            return next();
-        }           
-        req.user = decoded.user;
-        next();
-    }
     
-    if (expired) {
-
-        const newAccessToken = await recreateAccessToken(refreshToken);
-
-        if (newAccessToken) {
-
-            res.setHeader("x-access-token", newAccessToken);
-            const { decoded } = decode(newAccessToken);
-            req.user = decoded.user;
-
-            next();
-
+    const {decoded,expired}=decode(accessToken);
+  
+    if(decoded){
+        const result =await sessionValidation(decoded,req.get("user-agent") || "" );
+        if(!result){
+           return next();
         }
-        next();
+        req.user=result;
+        
     }
-    next();
+    if(expired){
+        const result=await recreateAccessToken(refreshToken,req.get("user-agent") || "" );
+     
+        if(!result){
+           return next();
+        }
+        
+        res.setHeader("x-access-token",result.accessToken);
+        req.user=result.user;
+       
+        return next();
+    }
+    return next();
 
 };
 
