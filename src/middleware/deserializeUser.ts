@@ -29,7 +29,7 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
         }
         
         res.setHeader("x-access-token",result.accessToken);
-        req.user=result.user;
+        req.user=result.userData;
        
         return next();
     }

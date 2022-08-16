@@ -12,6 +12,7 @@ import { LeanDocument } from "mongoose";
 import { findUserQuery } from "../repo/user.repo";
 import log from "../logger";
 import _ from "lodash";
+import { addToSessionMap, addToUserMap, getFromSessionMap, getFromUserMap, removeFromSessionMap } from "./cache.service";
 export async function createSession(input: {
     userId: string;
     userAgent: string;
@@ -53,38 +54,61 @@ export async function sessionValidation(
     },
     userAgent: string
 ) {
-    const session = await findSessionQuery({ _id: decoded.sessionId });
+    const cachedSession = getFromSessionMap(decoded.sessionId.toString());
+    const session = cachedSession ? cachedSession : await findSessionQuery({ _id: decoded.sessionId });
     if (!session) {
         return false;
     }
+    if (!cachedSession) {
+        addToSessionMap(decoded.sessionId.toString(), session);
+    }
+
     if (session.userAgent !== userAgent) {
         return false;
     }
-    const user = await findUserQuery({ _id: decoded.user });
-    return _.omit(user, "password");
+    const cachedUser = getFromUserMap(decoded.user.toString());
+    const user = cachedUser ? cachedUser : await findUserQuery({ _id: decoded.user });
+    if (!user) {
+        return false;
+    }
+    if (!cachedUser) {
+        addToUserMap(decoded.user.toString(), user);
+    }
+    return {user:_.omit(user, "password"),sessionId:session.id};
 }
 
-export async function recreateAccessToken(refreshToken: string,userAgent:string) {
+export async function recreateAccessToken(refreshToken: string, userAgent: string) {
     const output = decode(refreshToken);
-   
-    if (output.decoded) {
-        const session = await findSessionQuery({ _id: output.decoded.session });
 
+    if (output.decoded) {
+        const cachedSession = getFromSessionMap(output.decoded.session.toString());
+        const session = cachedSession ? cachedSession : await findSessionQuery({ _id: output.decoded.session });
         if (!session) {
             return false;
         }
-        if(session.userAgent!==userAgent){
+        if (!cachedSession) {
+            addToSessionMap(output.decoded.session.toString(), session);
+        }
+
+        if (session.userAgent !== userAgent) {
             return false;
         }
-        const user = await findUserQuery({ _id: session.userId });
+        const cachedUser = getFromUserMap(session.userId.toString());
+        const user = cachedUser ? cachedUser : await findUserQuery({ _id: session.userId });
         if (!user) return false;
+        if (!cachedUser) {
+            addToUserMap(session.userId.toString(), user);
+        }
 
-        const accessToken = createAccessToken(_.omit(user, "password"), session);
-        return {accessToken:accessToken,user:_.omit(user, "password")};
+
+        const accessToken = createAccessToken(user, session);
+        return { accessToken: accessToken, userData:{user:_.omit(user, "password"),sessionId:session.id} };
     }
     return false;
 }
 
-export const deleteSession = async (userId: UserDocument["_id"]) => {
-    return deleteSessionQuery({ userId: userId });
+export const deleteSession = async (userData :{user:UserDocument,sessionId:SessionDocument["_id"]}) => {
+    removeFromSessionMap(userData.sessionId.toString());
+    return deleteSessionQuery({ _id: userData.sessionId });
 };
+    

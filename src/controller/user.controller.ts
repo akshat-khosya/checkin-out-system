@@ -15,7 +15,7 @@ export async function createUserHandler(req: Request, res: Response) {
         const mailRes = await sendMail((await user).email as string, "Password", `<h1>Your password is: ${otp}</h1>`);
         res.send("Please login with password sent to your mail");
     } catch (e) {
-        // log.error(e);
+        // luserog.error(e);
         res.status(401).json((e as Error).message);
     }
 }
@@ -23,10 +23,6 @@ export async function createUserHandler(req: Request, res: Response) {
 
 // user profile -get
 export async function getUserProfileHandler(req: Request, res: Response) {
-    log.info(req.user);
-    const user = await fetchUserProfile(req.user._id);
-    if(!user){
-        return res.send("No user found");
-    }
-    return res.send(_.omit(user.toJSON(),"password"));
+  
+    return res.send(_.omit(req.user.user.toJSON(),"password"));
 }

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon --config nodemon.json src/server.ts",
-    "build": "",
+    "build": "tsc",
     "test": "jest ",
     "test:watch": "jest --watch",
     "heroku": "node dist/src/server.js"

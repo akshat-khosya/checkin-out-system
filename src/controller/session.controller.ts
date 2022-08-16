@@ -18,9 +18,9 @@ export async function createSessionHandler(req: Request, res: Response) {
     const session = await createSession({ userId: user.id, userAgent: req.get("user-agent") || "" });
 
     // create access token
-    const accessToken =  createAccessToken(user, session);
+    const accessToken = createAccessToken(user, session);
     // create refresh token
-    const refreshToken =  createRefreshToken(session);
+    const refreshToken = createRefreshToken(session);
     // send token to client
     return res.send({ refreshToken, accessToken });
 
@@ -28,8 +28,9 @@ export async function createSessionHandler(req: Request, res: Response) {
 
 // delete session - logout
 export async function deleteSessionHandler(req: Request, res: Response) {
-    
-        const session = await deleteSession(req.user._id);
+
+    const session = await deleteSession(req.user);
+    return res.send({ message: "logout successfully" });
 
 }
 
