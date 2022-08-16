@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { UserDocument } from "./user.model";
 
 
-export interface UserDocument extends mongoose.Document {
+export interface HistoryDocument extends mongoose.Document {
     user: UserDocument["_id"];
     outgoingTime: Date;
     incomingTime: Date;
@@ -12,7 +13,7 @@ export interface UserDocument extends mongoose.Document {
 
 }
 
-const HistorySchema = new mongoose.Schema<UserDocument>({
+const HistorySchema = new mongoose.Schema<HistoryDocument>({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -48,5 +49,5 @@ const HistorySchema = new mongoose.Schema<UserDocument>({
     }
 );
 
-const Saved = mongoose.model<UserDocument>("Token", HistorySchema);
+const Saved = mongoose.model<HistoryDocument>("Token", HistorySchema);
 export default Saved;

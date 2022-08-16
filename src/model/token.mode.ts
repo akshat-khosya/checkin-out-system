@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { UserDocument } from "./user.model";
 
-export interface UserDocument extends mongoose.Document {
+export interface TokenDocument extends mongoose.Document {
     user: UserDocument["_id"];
     type: string;
     token: string;
@@ -33,5 +34,5 @@ const TokenSchema = new mongoose.Schema({
     }
 );
 
-const Token = mongoose.model<UserDocument>("Token", TokenSchema);
+const Token = mongoose.model<TokenDocument>("Token", TokenSchema);
 export default Token;

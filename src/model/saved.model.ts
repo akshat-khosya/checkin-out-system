@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { UserDocument } from "./user.model";
 
 
-export interface UserDocument extends mongoose.Document {
+export interface SavedDocument extends mongoose.Document {
     user: UserDocument["_id"];
     purpose: string;
     destination: string;
@@ -40,5 +41,5 @@ const SavedSchema = new mongoose.Schema({
     }
 );
 
-const Saved = mongoose.model<UserDocument>("Token", SavedSchema);
+const Saved = mongoose.model<SavedDocument>("Token", SavedSchema);
 export default Saved;
