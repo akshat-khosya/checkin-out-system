@@ -8,5 +8,9 @@ export const createUserSchema = object({
         phone:string().required("Phone is required")
         .min(10,"Phone must be at least 10 characters long")
         .max(10,"Phone must be at most 10 characters long"),
+        hostelName:string().required("Hostel Name is required"),
+        roomNo:string().required("Room No is required")
+        .min(3,"Room No must be at least 3 characters long")
+        .max(3,"Room No must be at most 3 characters long"),
     }),
 });  

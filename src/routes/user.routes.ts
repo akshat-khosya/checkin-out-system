@@ -11,6 +11,13 @@ export default function(){
     // user profile
     router.get("/api/user/profile",requiresUser,getUserProfileHandler);
 
+    // update profile
+
+    // change password
+
+    // forgot password
+
+    
     return router;
     
 }

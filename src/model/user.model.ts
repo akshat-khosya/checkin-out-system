@@ -8,6 +8,8 @@ export interface UserDocument extends mongoose.Document {
     password: string;
     role: string;
     phone: number;
+    hostelName:string;
+    roomNo:number;
     createdAt: Date;
     updatedAt: Date;
     comparePassword: (candidatePassword: string) => Promise<boolean>;
@@ -38,7 +40,16 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true
-    }
+    },
+    hostelName:{
+        type:String,
+        required:true
+    },
+    roomNo:{
+        type:Number,
+        required:true
+    },
+
 
 },
     {

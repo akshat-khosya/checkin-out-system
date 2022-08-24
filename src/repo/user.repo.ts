@@ -6,6 +6,8 @@ export async function createUserQuery(userdata: {
     phone: number;
     password: string;
     role: string;
+    hostelName:string;
+    roomNo:number;
 }) {
     try {
         return await User.create(userdata);

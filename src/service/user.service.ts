@@ -2,14 +2,16 @@ import otpGenrator from 'otp-generator';
 import _ from "lodash";
 import { createUserQuery, findUserQuery, validatePasswordQuery } from '../repo/user.repo';
 import { UserDocument } from '../model/user.model';
-export async function createUser(input: { name: string, roll: number, phone: number }) {
-    const otp = otpGenrator.generate(10, { specialChars: true, lowerCaseAlphabets: true, upperCaseAlphabets: true, digits: true });
+export async function createUser(input: { name: string, roll: number, phone: number,hostelName:string,roomNo:number }) {
+    const otp = otpGenrator.generate(10, { specialChars: false, lowerCaseAlphabets: true, upperCaseAlphabets: true, digits: true });
     const userdata = {
         email: `${input.roll}@iiitu.ac.in`,
         name: input.name,
         phone: input.phone,
         password: otp,
-        role: "user"
+        role: "user",
+        roomNo:input.roomNo,
+        hostelName:input.hostelName
     };
     return await { user: createUserQuery(userdata), otp: otp };
 
