@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "config";
+import config from "../../config/default";
 import bcrypt from "bcrypt";
 
 export interface UserDocument extends mongoose.Document {
