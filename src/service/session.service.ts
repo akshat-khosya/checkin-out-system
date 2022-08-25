@@ -7,7 +7,7 @@ import {
     deleteSessionQuery,
 } from "../repo/session.repo";
 import { decode, sign } from "../utils/jwt.utils";
-import config from "config";
+import config from "../../config/default";
 import { LeanDocument } from "mongoose";
 import { findUserQuery } from "../repo/user.repo";
 import log from "../logger";
@@ -20,7 +20,7 @@ export async function createSession(input: {
     const sessionCheck = await findAndDeleteSessionQuery({
         userId: input.userId,
     });
-
+    removeFromSessionMap(sessionCheck?.id);
     const session = await sessionCreateQuery(input);
 
     return session;
@@ -30,7 +30,7 @@ export function createAccessToken(
     user:
         | Omit<UserDocument, "password">
         | LeanDocument<Omit<UserDocument, "password">>,
-    session: SessionDocument
+    session: SessionDocument    
 ): string {
     const accessToken = sign(
         { user: user.id, sessionId: session.id },

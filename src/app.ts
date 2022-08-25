@@ -1,6 +1,6 @@
 
 import log from "./logger";
-import config from "config";
+import config from "../config/default";
 import connect from "./db/connect";
 import createServer from "./utils/server";
 

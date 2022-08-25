@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import config from "config";
+import config from "../../config/default";
 import log from "../logger";
 
 function connect() {
