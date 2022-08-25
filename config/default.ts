@@ -7,7 +7,7 @@ class Config {
         env.config();
         this._config = {
             port: process.env.PORT,
-            host: process.env.HOST,
+            host: process.env.HOST || "localhost",
             dbUri: process.env.DB_URI,
             saltWorkFactor: 10,
             accessTokenTtl: "15m",
