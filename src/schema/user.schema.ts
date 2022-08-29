@@ -14,3 +14,14 @@ export const createUserSchema = object({
         .max(3,"Room No must be at most 3 characters long"),
     }),
 });  
+
+
+export const updateUserPasswordSchema = object({
+    body:object({
+        password:string().required("Password is required").
+        min(6,"Password must be at least 6 characters long"),
+        newPassword:string().required("New Password is required").
+        min(6,"New Password must be at least 6 characters long")
+    }),
+});
+        

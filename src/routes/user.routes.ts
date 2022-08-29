@@ -1,7 +1,7 @@
 import {Express, Router} from "express";
-import { createUserHandler, getUserProfileHandler } from "../controller/user.controller";
+import { createUserHandler, getUserProfileHandler, updateUserPasswordHandler } from "../controller/user.controller";
 import { requiresUser, validateRequest } from "../middleware";
-import { createUserSchema } from "../schema/user.schema";
+import { createUserSchema, updateUserPasswordSchema } from "../schema/user.schema";
 
 export default function(){
     const router =  Router();
@@ -14,7 +14,7 @@ export default function(){
     // update profile
 
     // change password
-
+    router.post("/api/user/change-password",[requiresUser,validateRequest(updateUserPasswordSchema)],updateUserPasswordHandler);
     // forgot password
 
     

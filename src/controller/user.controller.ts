@@ -1,7 +1,7 @@
 import log from "../logger";
 import { Request, Response } from "express";
 import _ from "lodash";
-import { createUser, fetchUserProfile } from "../service/user.service";
+import { createUser, fetchUserProfile, updateUserPassword, validatePassword } from "../service/user.service";
 import { sendMail } from "../utils/email.utils";
 import { decode } from "../utils/jwt.utils";
 
@@ -25,4 +25,21 @@ export async function createUserHandler(req: Request, res: Response) {
 export async function getUserProfileHandler(req: Request, res: Response) {
   
     return res.send(_.omit(req.user.user.toJSON(),"password"));
+}
+
+
+// change password - post
+
+export  function updateUserPasswordHandler(req:Request,res:Response){
+        // validate user with given password
+        const user=validatePassword({email:req.user.user.email,password:req.body.password});
+        if(!user){
+            return res.status(401).json({
+                message:"Invalid password"
+            });
+        }
+        // update password
+        const updatedPassword=updateUserPassword(req.user.user.id,req.body.newPassword);
+        return res.status(200);
+        
 }
