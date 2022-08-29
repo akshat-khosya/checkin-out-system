@@ -1,4 +1,5 @@
 import _ from "lodash";
+import log from "../logger";
 import User, { UserDocument } from "../model/user.model";
 export async function createUserQuery(userdata: {
     email: string;
@@ -27,7 +28,20 @@ export async function findUserQuery(query: Object) {
     }
 }
 
+
 export async function validatePasswordQuery(input:{user:UserDocument, password:string}) {
+   
     return await input.user.comparePassword(input.password);
 }
+
+
+export async function updateQuery(findQuery:Object,updateQuery:Object){
+   try {
+        const user=await User.updateOne(findQuery,{$set:updateQuery});
+        return user;
+   } catch (error) {
+        throw new Error((error as Error).message);
+   }
+}
+
 

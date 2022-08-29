@@ -30,16 +30,19 @@ export async function getUserProfileHandler(req: Request, res: Response) {
 
 // change password - post
 
-export  function updateUserPasswordHandler(req:Request,res:Response){
+export async function updateUserPasswordHandler(req:Request,res:Response){
         // validate user with given password
-        const user=validatePassword({email:req.user.user.email,password:req.body.password});
+        
+        const user=await validatePassword({email:req.user.user.email,password:req.body.password});
+
+        log.info(user);
         if(!user){
             return res.status(401).json({
                 message:"Invalid password"
             });
         }
         // update password
-        const updatedPassword=updateUserPassword(req.user.user.id,req.body.newPassword);
-        return res.status(200);
+        const updatedPassword=await updateUserPassword(req.user.user.id,req.body.newPassword);
+        return res.send(200);
         
 }
