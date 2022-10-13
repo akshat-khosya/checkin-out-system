@@ -9,7 +9,7 @@
     "build": "tsc",
     "test": "jest ",
     "test:watch": "jest --watch",
-    "heroku": "node dist/src/app.js"
+    "heroku": "node dist/app.js"
   },
   "repository": {
     "type": "git",
