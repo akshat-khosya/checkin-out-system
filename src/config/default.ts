@@ -1,5 +1,5 @@
 import env from 'dotenv';
-import log from '../src/logger';
+import log from '../logger';
 
 class Config {
     _config: Record<string, any>;

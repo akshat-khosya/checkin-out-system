@@ -24,4 +24,12 @@ export const updateUserPasswordSchema = object({
         min(6,"New Password must be at least 6 characters long")
     }),
 });
+
+export const createOtpSentSchema = object({
+    body:object({
+        roll:string().required("Roll is required")
+        .min(5,"Roll must be at least 5 characters long")
+        .max(5,"Roll must be at most 5 characters long")
+    })
+});
         

@@ -30,10 +30,6 @@ const HistorySchema = new mongoose.Schema<HistoryDocument>({
         type: String,
         required: true
     },
-    destination: {
-        type: String,
-        required: true
-    },
     type: {
         type: String,
         required: true
@@ -41,8 +37,6 @@ const HistorySchema = new mongoose.Schema<HistoryDocument>({
     url: {
         type: String,
     }
-
-
 },
     {
         timestamps: true

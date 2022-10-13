@@ -1,6 +1,6 @@
 
 import log from "./logger";
-import config from "../config/default";
+import config from "./config/default";
 import connect from "./db/connect";
 import createServer from "./utils/server";
 
@@ -12,6 +12,7 @@ const host = config.get("host") as string;
 
 
 const app=createServer();
+
 
 
 

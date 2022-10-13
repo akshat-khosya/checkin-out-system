@@ -2,7 +2,7 @@ import otpGenrator from 'otp-generator';
 import _ from "lodash";
 import { createUserQuery, findUserQuery, updateQuery, validatePasswordQuery } from '../repo/user.repo';
 import { UserDocument } from '../model/user.model';
-import config from '../../config/default';
+import config from '../config/default';
 import bcrypt from "bcrypt";
 import log from '../logger';
 export async function createUser(input: { name: string, roll: number, phone: number,hostelName:string,roomNo:number }) {

@@ -7,7 +7,7 @@ import {
     deleteSessionQuery,
 } from "../repo/session.repo";
 import { decode, sign } from "../utils/jwt.utils";
-import config from "../../config/default";
+import config from "../config/default";
 import { LeanDocument } from "mongoose";
 import { findUserQuery } from "../repo/user.repo";
 import log from "../logger";
