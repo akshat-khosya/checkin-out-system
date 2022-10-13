@@ -16,8 +16,8 @@ const app=createServer();
 
 
 
-app.listen(port, host, () => {
-  log.info(`Server is listening at http://${host}:${port}`);
+app.listen(port, () => {
+  log.info(`Server is listening on port ${port}`);
   connect();
   
 
