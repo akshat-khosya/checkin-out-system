@@ -1,7 +1,10 @@
-import {Express} from "express";
-import sessionRoutes from "./session.routes";
-import userRoutes from "./user.routes";
-export default function(app:Express){
-    app.use(userRoutes());
-    app.use(sessionRoutes());
+import { Express } from "express";
+
+export default function (app: Express) {
+    // create a user
+    
+    // user profile
+    // update profile -> superadmin will be able to update any profile on request
+    // change password
+    // forgot password
 }
