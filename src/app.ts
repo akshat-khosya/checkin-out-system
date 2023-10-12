@@ -1,14 +1,14 @@
 
-import log from "./logger";
-import config from "./config/default";
-import connect from "./db/connect";
+import log from "./lib/logger";
+import config from "./lib/config/default";
+import connect from "./lib/db/connect";
 import createServer from "./utils/server";
+import routes from "./routes";
 
 
 
 
 const port = config.get("port") as number;
-const host = config.get("host") as string;
 
 
 const app=createServer();
@@ -19,6 +19,5 @@ const app=createServer();
 app.listen(port, () => {
   log.info(`Server is listening on port ${port}`);
   connect();
-  
-
+  routes(app);
 });

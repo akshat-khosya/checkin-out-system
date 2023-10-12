@@ -1,22 +1,27 @@
-import log from "../logger";
-import Session from "../model/session.model";
+
+import { Session } from "../model/session.model"
 
 
-export async function findAndDeleteSessionQuery(query:Object) {
-    return Session.findOneAndDelete(query)
-}
-export async function deleteSessionQuery(query:Object) {
-    return Session.deleteOne(query);
-}
-export async function sessionCreateQuery(input: { userId: string,userAgent:string }) {
-    
-    return await Session.create({ userId: input.userId, userAgent:input.userAgent });
-   
+
+const findOnSessionQuery = async (query:Object) =>{
+    return await Session.findOne(query);
 }
 
-export async function findSessionQuery(query:Object) {
-   
-    const session=await Session.findOne(query);
-   
-    return session;
+const updateManySession = async (query:Object,data:Object)=>{
+    return await Session.updateMany(query,{
+        $set:data
+    });
 }
+const findManySessionQuery = async (query:Object)=>{
+    return await Session.find(query);
+}
+const updateOneSession = async (query:Object,data:Object)=>{
+    return await Session.updateOne(query,{
+        $set:data
+    })
+}
+
+const createNewSession = async (query:Object)=>{
+    return await Session.create(query);
+}
+export {findOnSessionQuery,updateManySession,updateOneSession,createNewSession,findManySessionQuery};

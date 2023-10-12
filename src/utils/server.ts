@@ -1,7 +1,7 @@
 import express from "express";
-import { deserializeUser } from "../middleware";
-import routes from "../routes";
+import useragent from "express-useragent";
 import cors from "cors";
+import { deserializeUser } from "../middleware";
 function createServer() {
     const app = express();
 
@@ -15,9 +15,9 @@ function createServer() {
 
     app.use(express.urlencoded({ extended: false }));
 
-    app.use(deserializeUser);
+    app.use(useragent.express());
 
-    routes(app);
+    app.use(deserializeUser);
 
     return app;
 }

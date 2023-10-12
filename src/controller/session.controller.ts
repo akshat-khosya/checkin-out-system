@@ -1,39 +1,30 @@
-import log from "../logger";
 import { Request, Response } from "express";
-import { validatePassword } from "../service/user.service";
-import { createAccessToken, createRefreshToken, createSession, deleteSession } from "../service/session.service";
+import { createAccessToken, createValidateSession,createRefreshToken} from "../service/session.service";
+import { userValidationService } from "../service/user.service";
 
-// create session - login
-export async function createSessionHandler(req: Request, res: Response) {
 
-    // validate user
-    const user = await validatePassword(req.body);
-    if (!user) {
-        return res.status(401).json({
-            message: "Invalid email or password"
-        });
+// session create - login
+
+const userSessionCreateHandler = async (req:Request,res:Response)=>{
+    // validating Password
+    const user = await userValidationService({email:req.body.email,password:req.body.password});
+    if(!user){
+        return res.status(401).json({msg:"Invalid Email or Password"});
     }
+   
 
-    // create session
-    const session = await createSession({ userId: user.id, userAgent: req.get("user-agent") || "" });
-
-    // create access token
-    const accessToken = createAccessToken(user, session);
-    // create refresh token
-    const refreshToken = createRefreshToken(session);
-    // send token to client
-    return res.send({ refreshToken, accessToken });
-
+    // checking session
+    const session = await createValidateSession(user,req);
+    // create Access Token
+    const accessToken = await createAccessToken(user,session);
+    // create Refresh Token
+    const refreshToken = await createRefreshToken(session);
+    // send Response
+    let useData = {
+        email:user.email,
+        role:user.role
+    }
+    return res.status(200).json({msg:"Login Succesfully",accessToken:accessToken,refreshToken:refreshToken,userData:useData});
 }
 
-// delete session - logout
-export async function deleteSessionHandler(req: Request, res: Response) {
-
-    const session = await deleteSession(req.user);
-    return res.send({ message: "logout successfully" });
-
-}
-
-
-
-
+export {userSessionCreateHandler}

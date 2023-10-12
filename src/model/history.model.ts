@@ -1,22 +1,42 @@
 import mongoose from "mongoose";
-import { UserDocument } from "./user.model";
 
-
-export interface HistoryDocument extends mongoose.Document {
-    user: UserDocument["_id"];
-    outgoingTime: Date;
-    incomingTime: Date;
-    purpose: string;
-    destination: string;
-    type: string;
-    url: string;
-
+export enum Leave_Types {
+    ONE_DAY = 0,
+    ON_LEAVE = 1,
 }
 
-const HistorySchema = new mongoose.Schema<HistoryDocument>({
-    user: {
+export interface IHistory {
+    userId: mongoose.Types.ObjectId;
+    purpose: string;
+    type:Leave_Types;
+    leaveId?:mongoose.Types.ObjectId;
+    outgoingTime: Date;
+    incomingTime: Date;
+    out: boolean;
+    duty: Array<{gateNo:number,gateGuardId: mongoose.Types.ObjectId}>;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+const HistorySchema = new mongoose.Schema<IHistory>({
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        required: true,
+        ref: "User",
+    },
+    purpose: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: Number,
+        required: true,
+        default: Leave_Types.ONE_DAY,
+        enum: Leave_Types
+    },
+    leaveId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Leave",
     },
     outgoingTime: {
         type: Date,
@@ -24,24 +44,33 @@ const HistorySchema = new mongoose.Schema<HistoryDocument>({
     },
     incomingTime: {
         type: Date,
+       
+    },
+    out: {
+        type: Boolean,
         required: true,
+        default: true
     },
-    purpose: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    url: {
-        type: String,
-    }
-},
-    {
-        timestamps: true
-    }
-);
+    duty: [{
+        gateNo: {
+            type: Number,
+            required: true
+        },
+        gateGuardId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "GateGuard"
+        }
+    }],
 
-const Saved = mongoose.model<HistoryDocument>("Token", HistorySchema);
-export default Saved;
+
+},{timestamps:true});
+
+
+
+export const History = mongoose.model<IHistory>("History", HistorySchema);
+
+
+
+
+

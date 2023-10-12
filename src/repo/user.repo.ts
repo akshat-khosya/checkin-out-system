@@ -1,47 +1,37 @@
-import _ from "lodash";
-import log from "../logger";
-import User, { UserDocument } from "../model/user.model";
-export async function createUserQuery(userdata: {
-    email: string;
-    name: string;                                                                           
-    phone: number;
-    password: string;
-    role: string;
-    hostelName:string;
-    roomNo:number;
-}) {
-    try {
-        return await User.create(userdata);
-    } catch (error) {
-        
-        throw new Error((error as Error).message);
-    }
+import { Document, Types } from "mongoose";
+import { User } from "../model/user.model";
+import { IUser } from "../model/user.model";
 
+
+
+const findOneUser = async (query: Object) => {
+    return await User.findOne(query);
 }
 
-export async function findUserQuery(query: Object) {
+const createUser = async (query: Object) => {
     try {
-        const user=await User.findOne(query);
+        const user = await User.create(query);
         return user;
     } catch (error) {
         throw new Error((error as Error).message);
     }
+
 }
-
-
-export async function validatePasswordQuery(input:{user:UserDocument, password:string}) {
-   
+const userUpdateOne = async (query: Object, update: Object) => {
+    try {
+        const updatedUser = await User.updateOne(query,{
+            $set:update
+        });
+        return updatedUser
+    } catch (error) {
+        throw new Error((error as Error).message);
+    }
+}
+const userValidateQuery = async (input: {
+    user: (Document<unknown, any, IUser> & IUser & {
+        _id: Types.ObjectId;
+    }), password: string
+}) => {
     return await input.user.comparePassword(input.password);
 }
-
-
-export async function updateQuery(findQuery:Object,updateQuery:Object){
-   try {
-        const user=await User.updateOne(findQuery,{$set:updateQuery});
-        return user;
-   } catch (error) {
-        throw new Error((error as Error).message);
-   }
-}
-
-
+export { findOneUser, createUser, userValidateQuery,userUpdateOne };

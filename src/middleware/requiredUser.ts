@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Request, Response, NextFunction } from "express";
-import log from "../logger";
 
 const requiresUser = async (
   req: Request,

@@ -1,29 +1,54 @@
 import mongoose from "mongoose";
-import { UserDocument } from "./user.model";
 
-export interface SessionDocument extends mongoose.Document {
-    userId: UserDocument["_id"];
-    userAgent: String;
+
+export interface ISession {
+    userId: mongoose.Types.ObjectId;
+    userAgent: string;
+    valid:boolean;
+    lastActive: Date;
+    geoLocation:string;
+    machineId:string;
     createdAt: Date;
-    updateAt: Date;
-}
+    updatedAt: Date;
+};
 
-const SessionSchema = new mongoose.Schema(
-    {
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            unique:true,
-            ref: "User"
-        },
-        userAgent: {
-            type: String
-        },
+const SessionSchema = new mongoose.Schema<ISession>({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
     },
-    {
-        timestamps: true
+    userAgent: {
+        type: String,
+        required: true
+    },
+    valid: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    lastActive: {
+        type: Date,
+        required: true
+    },
+    geoLocation: {
+        type: String,
+        required: true
+    },
+    machineId: {
+        type: String,
+        required: true,
+        unique: true
     }
-);
 
-const Session = mongoose.model<SessionDocument>("Session", SessionSchema);
 
-export default Session;
+},{timestamps:true});
+
+
+
+export const Session = mongoose.model<ISession>("Session", SessionSchema);
+
+
+
+
+
